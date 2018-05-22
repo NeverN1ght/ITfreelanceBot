@@ -16,7 +16,9 @@ namespace ITfreelanceBot.Dialogs
     {
         public Task StartAsync(IDialogContext context)
         {
-            context.Wait(DeveloperInterviewAsync);
+            //context.Wait(DeveloperInterviewAsync);
+
+            context.Call(MakeDeveloperInterview(), ResumeAfterNewDialog);
 
             return Task.CompletedTask;
         }

@@ -13,6 +13,8 @@ namespace ITfreelanceBot.Dialogs
     [Serializable]
     public class RootDialog : IDialog<object>
     {
+        private int role = 0;
+
         private enum Role
         {
             Client,
@@ -34,36 +36,41 @@ namespace ITfreelanceBot.Dialogs
 
             PromptDialog.Choice(
                 context,
-                this.OnSelectedRoleAsync,
+                OnSelectedRoleAsync,
                 new List<Role>() { Role.Client, Role.Developer},
                 "Select your role",
-                "I don't understand your choice",
-                3);
-
-            //await context.Forward(new DeveloperDialog(), End, activity, CancellationToken.None);
-
+                "I don't understand your choice");
         }
 
-        private async Task OnSelectedRoleAsync(IDialogContext context, IAwaitable<Role> role, IAwaitable<object> result)
+        private async Task OnSelectedRoleAsync(IDialogContext context, IAwaitable<Role> role)
         {
-            var selectedRole = await role;
-
-            var activity = await result as Activity;
+            Role selectedRole = await role;
 
             switch (selectedRole)
             {
                 case Role.Client:
-                    //await context.Forward(new ClientDialog(), End, activity, CancellationToken.None);
+                    //context.Call(n);
                     break;
                 case Role.Developer:
-                    await context.Forward(new DeveloperDialog(), End, activity, CancellationToken.None);
+                    context.Call(new DeveloperDialog(), ResumeAfterNewDialog);
                     break;
             }
         }
 
-        private async Task End(IDialogContext context, IAwaitable<object> result)
+
+        private async Task ResumeAfterNewDialog(IDialogContext context, IAwaitable<object> result)
         {
-            await context.PostAsync("Done!");
+            var interview = await result as DeveloperInfo;
+
+            if (interview != null)
+            {
+                await context.PostAsync("Success, thank you!");
+            }
         }
+
+        //private async Task End(IDialogContext context, IAwaitable<object> result)
+        //{
+        //    await context.PostAsync("Done!");
+        //}
     }
 }
