@@ -14,35 +14,64 @@ namespace ITfreelanceBot.Dialogs
     [Serializable]
     public class DeveloperDialog : IDialog<object>
     {
-        public Task StartAsync(IDialogContext context)
+        private string Name { get; set; }
+        private string Technologies { get; set; }
+        private string Expirience { get; set; }
+        private long Rate { get; set; } // need to do double
+
+        public async Task StartAsync(IDialogContext context)
         {
-            //context.Wait(DeveloperInterviewAsync);
-
-            context.Call(MakeDeveloperInterview(), ResumeAfterNewDialog);
-
-            return Task.CompletedTask;
+            PromptDialog.Text(
+            context: context,
+            resume: NameReceivedAsync,
+            prompt: "Введите свой Telegram-никнейм",
+            retry: "Вы ввели некорректные данные, попробуйте ещё раз");
         }
 
-        private async Task DeveloperInterviewAsync(IDialogContext context, IAwaitable<object> result)
+        private async Task NameReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
-            var activity = await result as Activity;
+            string response = await result;
+            Name = response;
 
-            await context.Forward(MakeDeveloperInterview(), ResumeAfterNewDialog, activity, CancellationToken.None);
+            PromptDialog.Text(
+            context: context,
+            resume: TechnologiesReceivedAsync,
+            prompt: "Опишите технологии с которыми вы работаете",
+            retry: "Вы ввели некорректные данные, попробуйте ещё раз");
         }
 
-        internal static IDialog<DeveloperInfo> MakeDeveloperInterview()
+        private async Task TechnologiesReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
-            return Chain.From(() => FormDialog.FromForm(DeveloperInfo.BuildForm));
+            string response = await result;
+            Technologies = response;
+
+            PromptDialog.Choice(
+            context: context,
+            resume: ExpirienceReceivedAsync,
+            options: new List<string> { "Junior", "Middle", "Senior"},
+            prompt: "Выберите свой уровень",
+            retry: "Я не понимаю ваш выбор, попробуйте ещё раз");
         }
 
-        private async Task ResumeAfterNewDialog(IDialogContext context, IAwaitable<object> result)
+        private async Task ExpirienceReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
-            var interview = await result as DeveloperInfo;
+            string response = await result;
+            Expirience = response;
 
-            if (interview != null)
-            {
-                await context.PostAsync("Success, thank you!");
-            }
+            PromptDialog.Number(
+            context: context,
+            resume: RateReceivedAsync,
+            prompt: "Введите свой рейт ($/час)",
+            retry: "Вы ввели некорректные данные, попробуйте ещё раз");
+        }
+
+        private async Task RateReceivedAsync(IDialogContext context, IAwaitable<long> result)
+        {
+            long response = await result;
+            Rate = response;
+
+            await context.PostAsync($"Вы ввели:\n  - Telegram-никнейм: *{Name}*\n  - Технологии: *{Technologies}*\n  - Уровень: *{Expirience}*\n  - Рейт: *{Rate} $/час*");
+            context.Done(this);
         }
     }
 }
