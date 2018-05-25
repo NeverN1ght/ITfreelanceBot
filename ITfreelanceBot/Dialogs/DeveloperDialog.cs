@@ -1,4 +1,6 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using ITfreelanceBot.DTOs;
+using ITfreelanceBot.Entities;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using Microsoft.Bot.Connector;
 using System;
@@ -13,25 +15,19 @@ namespace ITfreelanceBot.Dialogs
     [Serializable]
     public class DeveloperDialog : IDialog<object>
     {
-        private string Name { get; set; }
-        private string Technologies { get; set; }
-        private string Expirience { get; set; }
-        private long Rate { get; set; } // need to do double
+        private DeveloperDTO developerDTO;
+
+        public DeveloperDialog(string telegramId, string telegramName)
+        {
+            developerDTO = new DeveloperDTO
+            {
+                TelegramId = telegramId,
+                TelegramNickname = telegramName
+            };
+        }
 
         public async Task StartAsync(IDialogContext context)
         {
-            PromptDialog.Text(
-            context: context,
-            resume: NameReceivedAsync,
-            prompt: "Введите свой Telegram-никнейм",
-            retry: "Вы ввели некорректные данные, попробуйте ещё раз");
-        }
-
-        private async Task NameReceivedAsync(IDialogContext context, IAwaitable<string> result)
-        {
-            string response = await result;
-            Name = response;
-
             PromptDialog.Text(
             context: context,
             resume: TechnologiesReceivedAsync,
@@ -41,21 +37,19 @@ namespace ITfreelanceBot.Dialogs
 
         private async Task TechnologiesReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
-            string response = await result;
-            Technologies = response;
+            developerDTO.Technologies = await result;
 
             PromptDialog.Choice(
             context: context,
             resume: ExpirienceReceivedAsync,
-            options: new List<string> { "Junior", "Middle", "Senior"},
+            options: new List<DeveloperLevel> { DeveloperLevel.Junior, DeveloperLevel.Middle, DeveloperLevel.Senior},
             prompt: "Выберите свой уровень",
             retry: "Я не понимаю ваш выбор, попробуйте ещё раз");
         }
 
-        private async Task ExpirienceReceivedAsync(IDialogContext context, IAwaitable<string> result)
+        private async Task ExpirienceReceivedAsync(IDialogContext context, IAwaitable<DeveloperLevel> result)
         {
-            string response = await result;
-            Expirience = response;
+            developerDTO.Expirience = await result;
 
             PromptDialog.Number(
             context: context,
@@ -66,10 +60,20 @@ namespace ITfreelanceBot.Dialogs
 
         private async Task RateReceivedAsync(IDialogContext context, IAwaitable<long> result)
         {
-            long response = await result;
-            Rate = response;
+            developerDTO.Rate = (int)await result;
 
-            await context.PostAsync($"Вы ввели:\n  - Telegram-никнейм: *{Name}*\n  - Технологии: *{Technologies}*\n  - Уровень: *{Expirience}*\n  - Рейт: *{Rate} $/час*");
+            PromptDialog.Text(
+            context: context,
+            resume: AdditionalInfoReceivedAsync,
+            prompt: "Введите дополнительную информацию",
+            retry: "Вы ввели некорректные данные, попробуйте ещё раз");
+        }
+
+        private async Task AdditionalInfoReceivedAsync(IDialogContext context, IAwaitable<string> result)
+        {
+            developerDTO.AdditionalInfo = await result;
+
+            await context.PostAsync($"Вы ввели:\n  - Telegram-id: *{developerDTO.TelegramId}*\n  - Telegram-никнейм: *{developerDTO.TelegramNickname}*\n  - Технологии: *{developerDTO.Technologies}*\n  - Уровень: *{developerDTO.Expirience}*\n  - Рейт: *{developerDTO.Rate} $/час*");
             context.Done(this);
         }
     }

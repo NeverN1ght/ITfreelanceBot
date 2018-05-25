@@ -335,3 +335,4 @@ D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Release\ITfreelanceBot.csproj.CoreComp
 D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Release\ITfreelanceBot.csproj.CopyComplete
 D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Release\ITfreelanceBot.dll
 D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Release\ITfreelanceBot.pdb
+D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Release\ITfreelanceBot.csprojResolveAssemblyReference.cache

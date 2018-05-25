@@ -163,6 +163,7 @@
     <Compile Include="Dialogs\ClientDialog.cs" />
     <Compile Include="Dialogs\DefineDialog.cs" />
     <Compile Include="Dialogs\DeveloperDialog.cs" />
+    <Compile Include="Dialogs\ManagerDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="DTOs\ClientDTO.cs" />
     <Compile Include="DTOs\DeveloperDTO.cs" />
@@ -182,6 +183,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Properties\PublishProfiles\itfreelancebot-dialogs - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\itfreelancebot-manager - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\itfreelancebot-preproduction - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

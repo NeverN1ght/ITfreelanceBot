@@ -1,2 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters />
+<parameters>
+  <parameter name="BotDbContext-Web.config Connection String" description="BotDbContext Строка подключения в web.config, используемая приложением для доступа к базе данных." defaultValue="data source=(LocalDb)\MSSQLLocalDB;initial catalog=ITfreelanceBot.Context.BotDbContext;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Work\\ITfreelanceBot\\ITfreelanceBot\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BotDbContext']/@connectionString" />
+  </parameter>
+</parameters>

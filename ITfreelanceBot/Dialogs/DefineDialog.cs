@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using ITfreelanceBot.Entities;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,28 @@ namespace ITfreelanceBot.Dialogs
     [Serializable]
     public class DefineDialog : IDialog<object>
     {
+        private string telegramId;
+        private string telegramName;
+
+        public DefineDialog(string telegramId, string telegramName)
+        {
+            this.telegramId = telegramId;
+            this.telegramName = telegramName;
+        }
+
         public async Task StartAsync(IDialogContext context)
         {
             // define if user already exists
+
+            //not working
+            //foreach (var manager in Managers.ManagerIds)
+            //{
+            //    if (telegramId == manager.Key.ToString())
+            //    {
+            //        context.Call(new ManagerDialog(telegramName), ResumeAfterConversation);
+            //    }
+            //}
+
             PromptDialog.Choice(
                 context,
                 OnSelectedRoleAsync,
@@ -35,7 +55,7 @@ namespace ITfreelanceBot.Dialogs
                         context.Call(new ClientDialog(), ResumeAfterConversation);
                         break;
                     case "Я разработчик":
-                        context.Call(new DeveloperDialog(), ResumeAfterConversation);
+                        context.Call(new DeveloperDialog(telegramId, telegramName), ResumeAfterConversation);
                         break;
                 }
             }

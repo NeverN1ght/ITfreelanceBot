@@ -19,9 +19,10 @@ namespace ITfreelanceBot.Dialogs
 
         private async Task ShowWelcomeMessageAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            // тут можно взять активити (айди пользователя)
+            var telegramId = (await result).From.Id;
+            var telegramName = (await result).From.Name;
             await context.PostAsync("Здравствуйте! Я официальный бот канала \"ITfreelance\". Я здесь чтобы помочь вам оставить заявку");
-            context.Call(new DefineDialog(), ResumeAfterConversation); //можно передать активити в конструктор
+            context.Call(new DefineDialog(telegramId, telegramName), ResumeAfterConversation); //можно передать активити в конструктор
         }
 
         private async Task ResumeAfterConversation(IDialogContext context, IAwaitable<object> result)
