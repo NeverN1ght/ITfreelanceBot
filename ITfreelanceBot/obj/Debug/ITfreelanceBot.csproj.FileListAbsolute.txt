@@ -331,8 +331,8 @@ D:\Work\ITfreelanceBot\ITfreelanceBot\bin\ko\System.Spatial.resources.dll
 D:\Work\ITfreelanceBot\ITfreelanceBot\bin\ru\System.Spatial.resources.dll
 D:\Work\ITfreelanceBot\ITfreelanceBot\bin\zh-Hans\System.Spatial.resources.dll
 D:\Work\ITfreelanceBot\ITfreelanceBot\bin\zh-Hant\System.Spatial.resources.dll
-D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Debug\ITfreelanceBot.csprojAssemblyReference.cache
 D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Debug\ITfreelanceBot.csproj.CoreCompileInputs.cache
 D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Debug\ITfreelanceBot.csproj.CopyComplete
 D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Debug\ITfreelanceBot.dll
 D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Debug\ITfreelanceBot.pdb
+D:\Work\ITfreelanceBot\ITfreelanceBot\obj\Debug\ITfreelanceBot.csprojResolveAssemblyReference.cache
